@@ -52,3 +52,14 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# SQLite database files
+*.db
+*.sqlite
+
+# SQLite runtime WAL / SHM files
+*.db-wal
+*.db-shm
+
+# Generated API models
+/Apis/

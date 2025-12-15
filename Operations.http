@@ -1,0 +1,36 @@
+@baseUrl = http://localhost:5170/api
+@userId = user-id-1
+@petId = 1
+
+### Get All Users
+GET {{baseUrl}}/User
+### Get User by ID
+GET {{baseUrl}}/User/{{userId}}
+
+### Create New User
+POST {{baseUrl}}/User
+Content-Type: application/json
+
+{
+  "id": "{{userId}}",
+  "name": "User 1"
+}
+
+### Update User
+PUT {{baseUrl}}/User/{{userId}}
+Content-Type: application/json
+
+{
+  "name": "Updated User 1"
+}
+
+### Assign Pet to User
+POST {{baseUrl}}/User/{{userId}}/pet/{{petId}}
+### Get Pets of User
+GET {{baseUrl}}/User/{{userId}}/pet
+
+### Delete User
+DELETE {{baseUrl}}/User/{{userId}}
+
+### Clear Database (Bulk Delete)
+POST {{baseUrl}}/Debug/clear-db
