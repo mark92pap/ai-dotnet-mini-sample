@@ -83,6 +83,17 @@ The API will be available at:
 
 ## API Endpoints
 
+### Authentication
+
+- **POST** `/api/auth/register` - Register a new user with email and password
+  - Request: `{ "email": "user@example.com", "password": "password123", "name": "John Doe" }`
+  - Response: `{ "accessToken": "...", "user": { "id": "...", "email": "...", "name": "...", "isActive": true } }`
+- **POST** `/api/auth/login` - Login with email and password
+  - Request: `{ "email": "user@example.com", "password": "password123" }`
+  - Response: `{ "accessToken": "...", "user": { "id": "...", "email": "...", "name": "...", "isActive": true } }`
+- **GET** `/api/auth/me` - Get current authenticated user (requires `Authorization: Bearer <token>` header)
+  - Response: `{ "id": "...", "email": "...", "name": "...", "isActive": true }`
+
 ### Users CRUD Operations
 
 - **GET** `/api/User` - Get all users
@@ -112,15 +123,19 @@ Use the included `Operations.http` file with the [REST Client](https://marketpla
 
 ```
 AiMiniSample/
-├── Apis/                # PetStore client + API wiring
-├── Features/            # Use-cases (Users, Pets, Testing)
+├── Apis/                 # PetStore client + API wiring
+├── Features/             # Use-cases organized by feature
+│   ├── Auth/             # Authentication (Register, Login, GetCurrentUser)
+│   ├── Users/            # User management (CRUD operations)
+│   └── Pets/             # Pet management
 ├── Controllers/          # API Controllers
 ├── Database_Tables/      # Entity models
 ├── DatabaseContext/      # EF Core DbContext
 ├── Persistence/          # Repository pattern implementation
 │   ├── Repositories/     # Repository interfaces and implementations
+│   ├── Migrations/       # EF Core database migrations
 │   └── DependencyInjection.cs
 ├── Common/               # Shared extensions and utilities
-├── Program.cs           # Application entry point
-└── appsettings.json     # Configuration
+├── Program.cs            # Application entry point
+└── appsettings.json      # Configuration (including JWT settings)
 ```
