@@ -5,8 +5,15 @@ namespace AiMiniSample.DatabaseContext;
 
 public static class DbSeeder
 {
-    public static async Task SeedAsync(MyDbContext context)
+    public static async Task SeedAsync(MyDbContext context, IWebHostEnvironment environment)
     {
+        // Only seed in Development or Testing environments to prevent seeding production with known credentials
+        var isAllowedEnvironment = environment.IsDevelopment() || environment.IsEnvironment("Testing");
+        if (!isAllowedEnvironment)
+        {
+            return;
+        }
+
         if (context.Users.Any())
         {
             return; // Database already seeded
