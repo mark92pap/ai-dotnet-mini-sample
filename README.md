@@ -116,6 +116,16 @@ The API will be available at:
 - **GET** `/api/User/{id}/pet` - Get pets of a user
 - **POST** `/api/User/{id}/pet/{petId}` - Assign pet to user
 
+### Store Items Endpoints
+
+- **GET** `/api/items` - Get all store items
+  - Optional query parameters: `category` (filter by category), `isActive` (filter by active status)
+- **GET** `/api/items/{id}` - Get store item by ID
+- **POST** `/api/items` - Create new store item
+  - Request: `{ "name": "...", "description": "...", "category": "...", "price": 0.00, "sku": "...", "currency": "USD", "isActive": true, "stockQuantity": 0 }`
+- **PUT** `/api/items/{id}` - Update store item
+- **DELETE** `/api/items/{id}` - Delete (soft-disable) store item
+
 ### Additional Endpoints
 
 - **POST** `/api/Debug/clear-db` - Clear all users/pets from database
@@ -136,9 +146,10 @@ AiMiniSample/
 ├── Features/             # Use-cases organized by feature
 │   ├── Auth/             # Authentication (Register, Login, GetCurrentUser)
 │   ├── Users/            # User management (CRUD operations)
-│   └── Pets/             # Pet management
+│   ├── Pets/             # Pet management
+│   └── StoreItems/       # Store items management (CRUD operations)
 ├── Controllers/          # API Controllers
-├── Database_Tables/      # Entity models
+├── Database_Tables/      # Entity models (User, Pet, StoreItem)
 ├── DatabaseContext/      # EF Core DbContext
 ├── Persistence/          # Repository pattern implementation
 │   ├── Repositories/     # Repository interfaces and implementations
