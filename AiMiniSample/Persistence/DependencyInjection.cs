@@ -6,10 +6,13 @@ namespace AiMiniSample.Persistence;
 
 public static class DependencyInjection
 {
-    public static void AddPersistence(this IServiceCollection services)
+    public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
+        var connectionString = configuration.GetConnectionString("DefaultConnection") 
+            ?? "Data Source=app.db;Foreign Keys=True";
+        
         services.AddDbContext<MyDbContext>(options =>
-            options.UseSqlite("Data Source=app.db;Foreign Keys=True"));
+            options.UseSqlite(connectionString));
         // Register your repositories and other persistence-related services here
         services.AddScoped<IUserRepository, UserRepository>();
     }
