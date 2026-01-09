@@ -16,6 +16,11 @@ public class MyDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Configure User entity
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
         // Configure User-Pet relationship
         modelBuilder.Entity<Pet>()
             .HasOne(p => p.User)

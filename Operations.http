@@ -1,9 +1,38 @@
 @baseUrl = http://localhost:5170/api
 @userId = user-id-1
 @petId = 1
+@authToken = your-jwt-token-here
+
+### === Authentication Endpoints ===
+
+### Register a new user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "name": "John Doe"
+}
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+
+### Get current authenticated user
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{authToken}}
+
+### === User Endpoints ===
 
 ### Get All Users
 GET {{baseUrl}}/User
+
 ### Get User by ID
 GET {{baseUrl}}/User/{{userId}}
 
@@ -26,6 +55,7 @@ Content-Type: application/json
 
 ### Assign Pet to User
 POST {{baseUrl}}/User/{{userId}}/pet/{{petId}}
+
 ### Get Pets of User
 GET {{baseUrl}}/User/{{userId}}/pet
 
