@@ -34,7 +34,13 @@ public class StoreItemController : StoreItemApiController
         CancellationToken cancellationToken = default
     )
     {
-        await _mediator.Send(new DeleteStoreItemCommand(id), cancellationToken);
+        var result = await _mediator.Send(new DeleteStoreItemCommand(id), cancellationToken);
+        
+        if (result.IsFailure)
+        {
+            throw new InvalidOperationException(result.Error);
+        }
+        
         return;
     }
 
