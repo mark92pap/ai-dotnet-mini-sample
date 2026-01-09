@@ -19,7 +19,7 @@ services:
       - sqlite-data:/app/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/User"]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080/api/User || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
