@@ -12,5 +12,6 @@ public static class DependencyInjection
             options.UseSqlite("Data Source=app.db;Foreign Keys=True"));
         // Register your repositories and other persistence-related services here
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IStoreItemRepository, StoreItemRepository>();
     }
 }

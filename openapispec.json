@@ -358,6 +358,224 @@
           }
         }
       }
+    },
+    "/items": {
+      "get": {
+        "tags": ["StoreItem"],
+        "summary": "Get all store items",
+        "operationId": "GetAllStoreItems",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by category"
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter by active status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoreItemResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["StoreItem"],
+        "summary": "Create a new store item",
+        "operationId": "CreateStoreItem",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStoreItemRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreItemResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/items/{id}": {
+      "get": {
+        "tags": ["StoreItem"],
+        "summary": "Get a store item by ID",
+        "operationId": "GetStoreItemById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the store item"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreItemResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["StoreItem"],
+        "summary": "Update a store item",
+        "operationId": "UpdateStoreItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the store item to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStoreItemRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreItemResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["StoreItem"],
+        "summary": "Delete (soft-disable) a store item",
+        "operationId": "DeleteStoreItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The ID of the store item to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -416,6 +634,146 @@
           "name": {
             "type": "string",
             "description": "Name of the pet"
+          }
+        }
+      },
+      "CreateStoreItemRequest": {
+        "type": "object",
+        "required": ["name", "description", "category", "price"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the store item"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the store item"
+          },
+          "sku": {
+            "type": "string",
+            "description": "Stock Keeping Unit (optional)",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the item"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal",
+            "description": "Price of the item",
+            "minimum": 0.01
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code (default: USD)",
+            "default": "USD"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether the item is active",
+            "default": true
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "description": "Stock quantity (optional)",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateStoreItemRequest": {
+        "type": "object",
+        "required": ["name", "description", "category", "price"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the store item"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the store item"
+          },
+          "sku": {
+            "type": "string",
+            "description": "Stock Keeping Unit (optional)",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the item"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal",
+            "description": "Price of the item",
+            "minimum": 0.01
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether the item is active"
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "description": "Stock quantity (optional)",
+            "nullable": true
+          }
+        }
+      },
+      "StoreItemResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the store item"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the store item"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the store item"
+          },
+          "sku": {
+            "type": "string",
+            "description": "Stock Keeping Unit",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the item"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal",
+            "description": "Price of the item"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether the item is active"
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "description": "Stock quantity",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Last update timestamp"
           }
         }
       }

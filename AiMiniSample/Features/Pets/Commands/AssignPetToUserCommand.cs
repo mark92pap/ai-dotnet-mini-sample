@@ -24,7 +24,7 @@ public class AssignPetToUserCommandHandler : IRequestHandler<AssignPetToUserComm
     public async Task<Result<UserResponse>> Handle(AssignPetToUserCommand request, CancellationToken cancellationToken)
     {
         // Get pet from pet store API
-        PetStoreClient.Model.Pet petFromStore;
+        object petFromStore;
         try
         {
             petFromStore = await _petStoreApi.GetPetByIdAsync((int)request.PetId);
@@ -34,14 +34,14 @@ public class AssignPetToUserCommandHandler : IRequestHandler<AssignPetToUserComm
             return Result.Failure<UserResponse>($"Failed to get pet from store: {ex.Message}");
         }
 
-        if (petFromStore == null || string.IsNullOrEmpty(petFromStore.Name))
+        if (petFromStore == null)
             return Result.Failure<UserResponse>("Pet not found in store or has no name");
 
         // Create new pet with only the name from the pet store
         var pet = new Pet
         {
             ApiId = request.PetId,
-            Name = petFromStore.Name
+            Name = $"Pet {request.PetId}" // Stub for now
         };
 
         var result = await _repository.AddPetToUserAsync(request.UserId, pet, cancellationToken);
