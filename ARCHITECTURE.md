@@ -40,7 +40,7 @@ AiMiniSample is a .NET 10 Web API implementing a clean architecture pattern with
 
 ### Controllers
 
-- [`TestController`](AiMiniSample/Controllers/UserController.cs) - Handles User CRUD operations
+- [`UserController`](AiMiniSample/Controllers/UserController.cs) - Handles User CRUD operations
 - [`PetController`](AiMiniSample/Controllers/PetController.cs) - Handles Pet assignment and retrieval
 - [`DebugController`](AiMiniSample/Controllers/DebugController.cs) - Database management endpoints
 
