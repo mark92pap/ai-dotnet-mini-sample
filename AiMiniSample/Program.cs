@@ -51,8 +51,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<MyDbContext>();
+    var environment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
     await context.Database.MigrateAsync();
-    await DbSeeder.SeedAsync(context);
+    await DbSeeder.SeedAsync(context, environment);
 }
 
 app.UseAuthentication();
