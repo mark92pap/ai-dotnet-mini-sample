@@ -1,6 +1,15 @@
 # AiMiniSample - CRUD API
 
-A minimal .NET 8 Web API with CRUD operations for Users and Pets using Entity Framework Core and SQLite.
+A minimal .NET 8 Web API with CRUD operations for Users and Pets using Entity Framework Core and SQLite, featuring JWT-based email/password authentication.
+
+## Security Notice
+
+⚠️ **Important**: The JWT secret keys in `appsettings.json` and `appsettings.Development.json` are placeholder values. 
+
+**Before deploying to production:**
+- Generate a strong, random secret key (at least 32 characters)
+- Store the key in environment variables or a secure secret management system
+- Never commit production secrets to source control
 
 ## Prerequisites
 
