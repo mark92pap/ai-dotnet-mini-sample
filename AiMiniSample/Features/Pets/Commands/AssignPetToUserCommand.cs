@@ -1,4 +1,5 @@
 using AiMiniSample.Apis;
+using AiMiniSample.Apis.Models;
 using AiMiniSample.Database_Tables;
 using AiMiniSample.Features.Users.Mappers;
 using AiMiniSample.Persistence.Repositories;
@@ -24,7 +25,7 @@ public class AssignPetToUserCommandHandler : IRequestHandler<AssignPetToUserComm
     public async Task<Result<UserResponse>> Handle(AssignPetToUserCommand request, CancellationToken cancellationToken)
     {
         // Get pet from pet store API
-        PetStoreClient.Model.Pet petFromStore;
+        PetStoreDto petFromStore;
         try
         {
             petFromStore = await _petStoreApi.GetPetByIdAsync((int)request.PetId);
@@ -37,7 +38,7 @@ public class AssignPetToUserCommandHandler : IRequestHandler<AssignPetToUserComm
         if (petFromStore == null || string.IsNullOrEmpty(petFromStore.Name))
             return Result.Failure<UserResponse>("Pet not found in store or has no name");
 
-        // Create new pet with only the name from the pet store
+        // Create new pet with the name from the pet store
         var pet = new Pet
         {
             ApiId = request.PetId,

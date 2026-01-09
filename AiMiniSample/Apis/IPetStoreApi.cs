@@ -1,8 +1,9 @@
-using PetStoreClient.Model;
+// using PetStoreClient.Model;
+using AiMiniSample.Apis.Models;
 
 namespace AiMiniSample.Apis;
 
 public interface IPetStoreApi
 {
-    Task<Pet> GetPetByIdAsync(int petId);
+    Task<PetStoreDto> GetPetByIdAsync(int petId);
 }
