@@ -63,3 +63,4 @@ nunit-*.xml
 
 # Generated API models
 /Apis/
+/ts-client/

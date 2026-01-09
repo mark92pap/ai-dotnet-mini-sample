@@ -1,14 +1,16 @@
 using System.Text;
 using AiMiniSample.Apis;
+using AiMiniSample.DatabaseContext;
 using AiMiniSample.Features.Auth.Services;
 using AiMiniSample.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApis();
-builder.Services.AddPersistence();
+builder.Services.AddPersistence(builder.Configuration);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
@@ -44,6 +46,14 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+// Seed database
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<MyDbContext>();
+    await context.Database.MigrateAsync();
+    await DbSeeder.SeedAsync(context);
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
