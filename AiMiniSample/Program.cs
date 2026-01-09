@@ -50,9 +50,21 @@ var app = builder.Build();
 // Seed database
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<MyDbContext>();
-    await context.Database.MigrateAsync();
-    await DbSeeder.SeedAsync(context);
+    try
+    {
+        var context = scope.ServiceProvider.GetRequiredService<MyDbContext>();
+        await context.Database.MigrateAsync();
+        await DbSeeder.SeedAsync(context);
+        
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation("Database seeding completed successfully");
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database. The application will continue to run, but initial data may be missing.");
+        // Application continues to run even if seeding fails
+    }
 }
 
 app.UseAuthentication();
